@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: -webkit-linear-gradient(360deg, #1C1C1C 10%, #494949 360%);
+    font-family: 'Poppins', sans-serif;
+}
+
+.movie {
+    height: 400px;
+    width: 300px;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.movie img {
+    max-width: 100%;
+}
