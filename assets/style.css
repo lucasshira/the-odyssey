@@ -11,13 +11,51 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .movie {
-    height: 400px;
+    background-color: #2e2e2e;
     width: 300px;
     border-radius: 3px;
-    color: #fff;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    margin: 1rem;
 }
 
 .movie img {
-    max-width: 100%;
+    width: 100%;
+}
+
+.movie-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem 1rem;
+    align-items: center;
+    color: #eee;
+    letter-spacing: 0.5px;
+}
+
+.movie-info h3 {
+    margin: 0;
+}
+
+.movie-info span {
+    background-color: #1C1C1C;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.movie-info span.green {
+    color: limegreen;
+}
+
+.movie-info span.orange {
+    color: orange;
+}
+
+.movie-info span.red {
+    color: red;
 }
