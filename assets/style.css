@@ -11,6 +11,26 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+header {
+    background-color: #2e2e2e;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search {
+    background-color: #fff;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.search:focus {
+    outline: none;
+}
+
 main {
     display: flex;
     flex-wrap: wrap;
@@ -19,9 +39,12 @@ main {
 .movie {
     background-color: #2e2e2e;
     width: 300px;
+    position: relative;
+    display: inline-block;
     border-radius: 3px;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
     margin: 1rem;
+    overflow: hidden;
 }
 
 .movie img {
@@ -58,4 +81,30 @@ main {
 
 .movie-info span.red {
     color: red;
+}
+
+.overview h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+}
+
+.overview {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    position: absolute;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.movie:hover img {
+    filter: blur(5px);
+}
+
+.movie:hover .overview {
+    opacity: 1;
 }
