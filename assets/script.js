@@ -22,6 +22,7 @@ function showMovies(movies) {
 
     movies.forEach((movie) => {
         const { poster_path, title, vote_average, overview } = movie;
+        const voteAverage = parseFloat(vote_average).toFixed(1);
 
         const movieEl = document.createElement('div');
         movieEl.classList.add('movie');
@@ -30,7 +31,7 @@ function showMovies(movies) {
             <img src="${IMGPATH + poster_path}" alt="${title}">
             <div class="movie-info">
                 <h3>${title}</h3>
-                <span class="${getClassByRate(vote_average)}">${vote_average}</span>
+                <span class="${getClassByRate(vote_average)}">${voteAverage}</span>
             </div>
             <div class="overview">
             <h3>Overview:</h3>
