@@ -6,6 +6,7 @@ const SEARCHAPI = 'https://api.themoviedb.org/3/search/movie?&api_key=1d4a1fe898
 const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
+const searchIcon = document.querySelector('.search-icon i');
 
 getMovies(APIURL);
 
@@ -34,7 +35,7 @@ function showMovies(movies) {
                 <span class="${getClassByRate(vote_average)}">${voteAverage}</span>
             </div>
             <div class="overview">
-            <h3>Overview:</h3>
+            <h3>${title}</h3>
                 ${overview}
             </div>
         `;
@@ -53,13 +54,21 @@ function getClassByRate(vote) {
     }
 }
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
+function performSearch() {
     const searchTerm = search.value;
 
     if (searchTerm) {
         getMovies(SEARCHAPI + searchTerm);
         search.value = '';
     }
+}
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    performSearch();
+});
+
+searchIcon.addEventListener('click', (e) => {
+    e.preventDefault();
+    performSearch();
 });

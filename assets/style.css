@@ -18,6 +18,25 @@ header {
     justify-content: flex-end;
 }
 
+.search-container {
+    position: relative;
+}
+
+.search-icon i {
+    color: #aaa;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color 0.3s ease;
+}
+
+.search-icon i:hover {
+    color: #000;
+    cursor: pointer;
+    transform: translateY(-50%) scale(1.2);
+}
+
 .search {
     background-color: #fff;
     border: 2px solid transparent;
@@ -33,6 +52,7 @@ header {
 
 main {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -44,7 +64,6 @@ main {
     border-radius: 3px;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
     margin: 1rem;
-    overflow: hidden;
 }
 
 .movie img {
@@ -92,7 +111,7 @@ main {
 
 .overview {
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 2rem;
     position: absolute;
     transition: opacity 0.3s ease;
@@ -105,9 +124,28 @@ main {
 }
 
 .movie:hover img {
-    filter: blur(5px);
+    filter: blur(0);
 }
 
 .movie:hover .overview {
     opacity: 1;
+}
+
+.movie:hover .movie-info h3,
+.movie:hover .movie-info span {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+    .movie {
+        width: calc(60% - rem);
+        height: auto;
+        margin: 1rem;
+        padding: 0;
+    }
+
+    .movie img {
+        width: 100%;
+    }
 }
