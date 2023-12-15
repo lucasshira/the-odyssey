@@ -7,21 +7,107 @@ const main = document.getElementById('main');
 const form = document.getElementById('form');
 const search = document.getElementById('search');
 const searchIcon = document.querySelector('.search-icon i');
+const homeButton = document.getElementById('home-button');
+const favoritesButton = document.getElementById('favorites-button');
 
-getMovies(APIURL);
 
-async function getMovies(url) {
-    const resp = await fetch(url);
-    const respData = await resp.json();
+function showHomePage() {
+    getMovies(APIURL);
 
-    showMovies(respData.results);
+    async function getMovies(url) {
+        const resp = await fetch(url);
+        const respData = await resp.json();
+    
+        showMovies(respData.results);
+    }
+    
+    function showMovies(movies) {
+        // clear main
+        main.innerHTML = '';
+    
+        movies.forEach((movie) => {
+            const { poster_path, title, vote_average, overview } = movie;
+            const voteAverage = parseFloat(vote_average).toFixed(1);
+    
+            const movieEl = document.createElement('div');
+            movieEl.classList.add('movie');
+    
+            movieEl.innerHTML = `
+                <img src="${IMGPATH + poster_path}" alt="${title}">
+                <div class="movie-info">
+                    <h3>${title}</h3>
+                    <span class="${getClassByRate(vote_average)}">${voteAverage}</span>
+                </div>
+                <div class="overview">
+                <h3>${title}</h3>
+                    ${overview}
+                </div>
+            `;
+
+            const addToFavoritesButton = document.createElement('button');
+            const addToFavoritesIcon = document.createElement('i');
+            addToFavoritesIcon.classList.add('fa', 'fa-bookmark', 'fa-regular');
+            
+            addToFavoritesButton.appendChild(addToFavoritesIcon);
+            
+            addToFavoritesButton.addEventListener('click', () => {
+                saveToFavorites(movie);
+            });
+            
+            movieEl.appendChild(addToFavoritesButton);
+            main.appendChild(movieEl);
+        });
+    }
+    
+    function getClassByRate(vote) {
+        if (vote >= 8) {
+            return 'green';
+        } else if (vote >= 5) {
+            return 'orange';
+        } else {
+            return 'red';
+        }
+    }
+    
+    function performSearch() {
+        const searchTerm = search.value;
+    
+        if (searchTerm) {
+            getMovies(SEARCHAPI + searchTerm);
+            search.value = '';
+        }
+    }
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        performSearch();
+    });
+    
+    searchIcon.addEventListener('click', (e) => {
+        e.preventDefault();
+        performSearch();
+    });
 }
 
-function showMovies(movies) {
-    // clear main
+function saveToFavorites(movie) {
+    const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
+    const movieExists = favorites.some((favMovie) => favMovie.id === movie.id);
+
+    if (!movieExists) {
+        favorites.push(movie);
+        localStorage.setItem('favoritesMovie', JSON.stringify(favorites));
+        alert('Movie added to favorites');
+    } else {
+        alert('Movie is already in favorites');
+    }
+}
+
+function showFavorites() {
     main.innerHTML = '';
 
-    movies.forEach((movie) => {
+    const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
+
+    favorites.forEach((movie) => {
         const { poster_path, title, vote_average, overview } = movie;
         const voteAverage = parseFloat(vote_average).toFixed(1);
 
@@ -35,40 +121,40 @@ function showMovies(movies) {
                 <span class="${getClassByRate(vote_average)}">${voteAverage}</span>
             </div>
             <div class="overview">
-            <h3>${title}</h3>
+                <h3>${title}</h3>
                 ${overview}
             </div>
         `;
 
+        const removeFromFavoritesButton = document.createElement('button');
+        removeFromFavoritesButton.innerText = 'Remove';
+        removeFromFavoritesButton.addEventListener('click', () => {
+            removeFavorite(movie);
+        });
+
+        movieEl.appendChild(removeFromFavoritesButton);
         main.appendChild(movieEl);
     });
-}
 
-function getClassByRate(vote) {
-    if (vote >= 8) {
-        return 'green';
-    } else if (vote >= 5) {
-        return 'orange';
-    } else {
-        return 'red';
+    function getClassByRate(vote) {
+        if (vote >= 8) {
+            return 'green';
+        } else if (vote >= 5) {
+            return 'orange';
+        } else {
+            return 'red';
+        }
     }
 }
 
-function performSearch() {
-    const searchTerm = search.value;
+function removeFavorite(movie) {
+    const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
+    const updatedFavorites = favorites.filter((favMovie) => favMovie.id !== movie.id);
 
-    if (searchTerm) {
-        getMovies(SEARCHAPI + searchTerm);
-        search.value = '';
-    }
+    localStorage.setItem('favoritesMovie', JSON.stringify(updatedFavorites));
+    showFavorites();
+    alert('Movie removed from favorites');
 }
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    performSearch();
-});
-
-searchIcon.addEventListener('click', (e) => {
-    e.preventDefault();
-    performSearch();
-});
+homeButton.addEventListener('click', showHomePage);
+favoritesButton.addEventListener('click', showFavorites);
