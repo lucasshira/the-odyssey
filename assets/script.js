@@ -92,14 +92,23 @@ function showHomePage() {
 function saveToFavorites(movie) {
     const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
     const movieExists = favorites.some((favMovie) => favMovie.id === movie.id);
+    const tooltip = document.createElement('span');
 
-    if (!movieExists) {
-        favorites.push(movie);
-        localStorage.setItem('favoritesMovie', JSON.stringify(favorites));
-        alert('Movie added to favorites');
-    } else {
-        alert('Movie is already in favorites');
-    }
+    tooltip.classList.add('tooltip');
+    tooltip.textContent = movieExists ? 'Movie is already in favorites' : 'Movie added to favorites';
+
+    const clickedIcon = event.currentTarget;
+
+    clickedIcon.parentElement.appendChild(tooltip);
+    tooltip.classList.add('active');
+
+    setTimeout(() => {
+        tooltip.classList.remove('active');
+        tooltip.remove();
+    }, 2000);
+
+    if (!movieExists) favorites.push(movie);
+    localStorage.setItem('favoritesMovie', JSON.stringify(favorites));
 }
 
 function showFavorites() {
@@ -127,7 +136,13 @@ function showFavorites() {
         `;
 
         const removeFromFavoritesButton = document.createElement('button');
-        removeFromFavoritesButton.innerText = 'Remove';
+        removeFromFavoritesButton.classList.add('remove-button');
+        const removeFavoritesIcon = document.createElement('i');
+
+        removeFavoritesIcon.classList.add('fa', 'fa-bookmark', 'fa-regular');
+        
+        removeFromFavoritesButton.appendChild(removeFavoritesIcon);
+        
         removeFromFavoritesButton.addEventListener('click', () => {
             removeFavorite(movie);
         });
@@ -153,8 +168,9 @@ function removeFavorite(movie) {
 
     localStorage.setItem('favoritesMovie', JSON.stringify(updatedFavorites));
     showFavorites();
-    alert('Movie removed from favorites');
 }
 
 homeButton.addEventListener('click', showHomePage);
 favoritesButton.addEventListener('click', showFavorites);
+
+showHomePage();
