@@ -10,7 +10,7 @@ const searchIcon = document.querySelector('.search-icon i');
 const homeButton = document.getElementById('home-button');
 const favoritesButton = document.getElementById('favorites-button');
 
-const moviePoster = document.querySelector('.movie img');
+// const moviePoster = document.querySelector('.movie img');
 const modal = document.getElementById('myModal');
 const closeBtn = document.querySelector('.close');
 const movieTitle = document.getElementById('movie-title');
@@ -105,7 +105,7 @@ function openMovieModal(movieId) {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
         .then(response => response.json())
         .then(data => {
-            const cast = data.cast.slice(0, 5); // Pegando os primeiros 5 atores para exibir
+            const cast = data.cast.slice(0, 8);
 
             const actorsInfo = cast.map(actor => {
                 return fetch(`https://api.themoviedb.org/3/person/${actor.id}?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
@@ -121,13 +121,22 @@ function openMovieModal(movieId) {
             Promise.all(actorsInfo)
                 .then(actors => {
                     const actorsList = actors.map(actor => {
-                        return `<div>
+                        return `<div class="actor">
                             <img src="https://image.tmdb.org/t/p/w185${actor.profilePath}" alt="${actor.name}">
                             <p>${actor.name}</p>
                         </div>`;
                     }).join('');
 
-                    movieActors.innerHTML = actorsList;
+                    const modalContent = `
+                    <div class="casts">
+                        <h2>Casts</h2>
+                        <div class="actors">
+                            ${actorsList}
+                        </div>
+                    </div>
+                `;
+
+                    movieActors.innerHTML = modalContent;
                     modal.style.display = 'block';
                 })
                 .catch(error => {
@@ -203,6 +212,11 @@ function showFavorites() {
 
         movieEl.appendChild(removeFromFavoritesButton);
         main.appendChild(movieEl);
+
+        movieEl.addEventListener('click', () => {
+            const movieId = movie.id;
+            openMovieModal(movieId);
+        });
     });
 
     function getClassByRate(vote) {

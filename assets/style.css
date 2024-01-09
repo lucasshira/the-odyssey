@@ -64,6 +64,7 @@ main {
     border-radius: 3px;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
     margin: 1rem;
+    cursor: pointer;
 }
 
 .movie img {
@@ -202,7 +203,9 @@ main {
 }
 
 .modal {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -215,30 +218,61 @@ main {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
-    padding: 50px;
+    margin: 50px auto;
+    padding: 40px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     position: relative;
     border-radius: 5px;
 }
 
+.actors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.actor {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+}
+
+.actor img {
+    width: 120px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.actor p {
+    font-weight: bold;
+    text-align: center;
+}
+
 .close {
     position: absolute;
-    top: 5%;
-    right: 5%;
+    top: 2%;
+    right: 3%;
     color: #aaa;
     float: right;
-    font-size: 30px;
+    font-size: 32px;
     font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
