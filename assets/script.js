@@ -105,7 +105,7 @@ function openMovieModal(movieId) {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
         .then(response => response.json())
         .then(data => {
-            const cast = data.cast.slice(0, 5); // Pegando os primeiros 5 atores para exibir
+            const cast = data.cast.slice(0, 8); // Pegando os primeiros 5 atores para exibir
 
             const actorsInfo = cast.map(actor => {
                 return fetch(`https://api.themoviedb.org/3/person/${actor.id}?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
@@ -127,7 +127,16 @@ function openMovieModal(movieId) {
                         </div>`;
                     }).join('');
 
-                    movieActors.innerHTML = actorsList;
+                    const modalContent = `
+                    <div class="casts">
+                        <h2>Casts</h2>
+                        <div class="actors">
+                            ${actorsList}
+                        </div>
+                    </div>
+                `;
+
+                    movieActors.innerHTML = modalContent;
                     modal.style.display = 'block';
                 })
                 .catch(error => {
