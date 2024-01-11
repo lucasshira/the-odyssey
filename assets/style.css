@@ -218,15 +218,44 @@ main {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 50px auto;
-    padding: 40px;
+    margin: 40px auto;
+    padding: 50px;
     border: 1px solid #888;
     width: 90%;
+    position: relative;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    position: relative;
+}
+
+.actors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.actor {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+}
+
+.actor img {
+    width: 100px;
+    height: auto;
     border-radius: 5px;
+}
+
+.actor p {
+    font-weight: bold;
+    text-align: center;
 }
 
 .actors {
@@ -264,9 +293,7 @@ main {
     right: 3%;
     color: #aaa;
     float: right;
-    font-size: 32px;
-    font-weight: bold;
-}
+    font-size: 34px;
 
 .close:hover,
 .close:focus {

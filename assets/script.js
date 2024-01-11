@@ -125,22 +125,8 @@ function openMovieModal(movieId) {
                     </div>
                 `;
 
-                movieActors.innerHTML = modalContent;
-
-                const addToFavoritesButton = document.createElement('button');
-                const addToFavoritesIcon = document.createElement('i');
-                addToFavoritesIcon.classList.add('fa', 'fa-bookmark', 'fa-regular');
-                
-                addToFavoritesButton.appendChild(addToFavoritesIcon);
-                
-                addToFavoritesButton.addEventListener('click', () => {
-                    saveToFavorites(movie);
-                });
-
-                modal.appendChild(addToFavoritesButton);
-
-                modal.style.display = 'block';
-
+                    movieActors.innerHTML = modalContent;
+                    modal.style.display = 'block';
                 })
                 .catch(error => {
                     console.error('Erro ao buscar dados dos atores:', error);
