@@ -10,7 +10,7 @@ const searchIcon = document.querySelector('.search-icon i');
 const homeButton = document.getElementById('home-button');
 const favoritesButton = document.getElementById('favorites-button');
 
-// const moviePoster = document.querySelector('.movie img');
+const moviePoster = document.querySelector('.movie img');
 const modal = document.getElementById('myModal');
 const closeBtn = document.querySelector('.close');
 const movieTitle = document.getElementById('movie-title');
@@ -49,7 +49,20 @@ function showHomePage() {
                     ${overview}
                 </div>
             `;
+
+            const addToFavoritesButton = document.createElement('button');
+            const addToFavoritesIcon = document.createElement('i');
+            addToFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-regular');
             
+            addToFavoritesButton.appendChild(addToFavoritesIcon);
+            
+            addToFavoritesButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                saveToFavorites(movie);
+                addToFavoritesButton.classList.toggle('favorite');
+            });
+            
+            movieEl.appendChild(addToFavoritesButton);
             main.appendChild(movieEl);
 
             movieEl.addEventListener('click', () => {
@@ -110,7 +123,7 @@ function openMovieModal(movieId) {
             Promise.all(actorsInfo)
                 .then(actors => {
                     const actorsList = actors.map(actor => {
-                        return `<div class="actor">
+                        return `<div>
                             <img src="https://image.tmdb.org/t/p/w185${actor.profilePath}" alt="${actor.name}">
                             <p>${actor.name}</p>
                         </div>`;
@@ -134,7 +147,7 @@ function openMovieModal(movieId) {
         })
         .catch(error => {
             console.error('Erro ao buscar dados do elenco:', error);
-    });
+        });
 }
 
 closeBtn.addEventListener('click', () => {
@@ -191,20 +204,22 @@ function showFavorites() {
         removeFromFavoritesButton.classList.add('remove-button');
         const removeFavoritesIcon = document.createElement('i');
 
-        removeFavoritesIcon.classList.add('fa', 'fa-bookmark', 'fa-regular');
+        removeFromFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-regular');
+        removeFromFavoritesButton.classList.toggle('removeFavorite');
         
         removeFromFavoritesButton.appendChild(removeFavoritesIcon);
         
-        removeFromFavoritesButton.addEventListener('click', () => {
+        removeFromFavoritesButton.addEventListener('click', (event) => {
+            event.stopPropagation();
             removeFavorite(movie);
+            removeFavoritesIcon.classList.toggle('removeFavorite');
         });
 
         movieEl.appendChild(removeFromFavoritesButton);
         main.appendChild(movieEl);
 
         movieEl.addEventListener('click', () => {
-            const movieId = movie.id;
-            openMovieModal(movieId);
+            openMovieModal(movie.id);
         });
     });
 
