@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Movies App</title>
 </head>
 <body>
     <header>
+        <nav>
+            <div class="openMenu"><i class="fas fa-bars"></i></div>
+            <ul class="mainMenu">
+                <li><a href="#" onclick="showHomePage()">Home</a></li>
+                <li><a href="#" onclick="showFavorites()">Bookmarks</a></li>
+                <li><a href="#" onclick="showGenres()">Genres</a></li>
+            <div class="closeMenu"><i class="fa fa-times"></i></div>
+                <!-- <span class="icones">
+                    <i class="fas fa-home"></i>
+                    <i class="fas fa-bookmark"></i>
+                    <i class="fas fa-film"></i>
+                </span> -->
+            </ul>
+        </nav>
+
         <form id="form">
             <div class="search-container">
                 <div class="search-icon">
@@ -16,22 +31,20 @@
                     <i class="fas fa-search"></i>
                 </div>
             </div>
-            <div class="navigation">
-                <button id="home-button" class="movie-button" onclick="showHomePage()">Home</button>
-                <button id="favorites-button" class="movie-button" onclick="showFavorites()">Favorites</button>
-            </div>
         </form>
+    </header>
 
+    <section class="section">
         <div id="myModal" class="modal">
             <div class="modal-content">
-              <span class="close">&times;</span>
+              <span class="close">< Back</span>
               <h2 id="movie-title"></h2>
+              <div class="bookmark"><i class="fa-solid fa-bookmark"></i> Bookmark</div>
               <p id="movie-info"></p>
               <p id="movie-actors"></p>
             </div>
           </div>
-
-    </header>
+    </section>
 
     <main id="main"></main>
 
