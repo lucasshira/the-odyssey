@@ -381,7 +381,7 @@ nav .openMenu {
     .actor {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px; /* Adiciona um espaço entre as imagens */
+        gap: 10px;
     }
     
     .actor img {
