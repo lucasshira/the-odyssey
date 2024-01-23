@@ -17,6 +17,12 @@ const movieTitle = document.getElementById('movie-title');
 const movieInfo = document.getElementById('movie-info');
 const movieActors = document.getElementById('movie-actors');
 
+const mainMenu = document.querySelector('.mainMenu');
+const openMenu = document.querySelector('.openMenu');
+const closeMenu = document.querySelector('.closeMenu');
+
+let bookmarked = false;
+
 function showHomePage() {
     getMovies(APIURL);
 
@@ -31,7 +37,7 @@ function showHomePage() {
         // clear main
         main.innerHTML = '';
     
-        movies.forEach((movie) => {
+        movies.forEach(async (movie) => {
             const { poster_path, title, vote_average, overview } = movie;
             const voteAverage = parseFloat(vote_average).toFixed(1);
     
@@ -40,47 +46,19 @@ function showHomePage() {
     
             movieEl.innerHTML = `
                 <img src="${IMGPATH + poster_path}" alt="${title}">
-                <div class="movie-info">
-                    <h3>${title}</h3>
-                    <span class="${getClassByRate(vote_average)}">${voteAverage}</span>
-                </div>
                 <div class="overview">
                 <h3>${title}</h3>
-                    ${overview}
+                <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
                 </div>
             `;
 
-            const addToFavoritesButton = document.createElement('button');
-            const addToFavoritesIcon = document.createElement('i');
-            addToFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-regular');
-            
-            addToFavoritesButton.appendChild(addToFavoritesIcon);
-            
-            addToFavoritesButton.addEventListener('click', (event) => {
-                event.stopPropagation();
-                saveToFavorites(movie);
-                addToFavoritesButton.classList.toggle('favorite');
-            });
-            
-            movieEl.appendChild(addToFavoritesButton);
             main.appendChild(movieEl);
 
             movieEl.addEventListener('click', () => {
                 const movieId = movie.id;
-                openMovieModal(movieId);
+                openMovieModal(movieId, voteAverage, overview);
             });
-
         });
-    }
-    
-    function getClassByRate(vote) {
-        if (vote >= 8) {
-            return 'green';
-        } else if (vote >= 5) {
-            return 'orange';
-        } else {
-            return 'red';
-        }
     }
     
     function performSearch() {
@@ -103,74 +81,106 @@ function showHomePage() {
     });
 }
 
-function openMovieModal(movieId) {
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
+function openMovieModal(movieId, voteAverage, overview) {
+    const castInfoPromise = fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
         .then(response => response.json())
         .then(data => {
-            const cast = data.cast.slice(0, 8);
+            const cast = data.cast.slice(0, 14);
 
-            const actorsInfo = cast.map(actor => {
+            const actorsInfo = cast.map(async actor => {
                 return fetch(`https://api.themoviedb.org/3/person/${actor.id}?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
-                    .then(response => response.json())
+                .then(response => response.json())
                     .then(actorData => {
                         return {
-                            name: actor.name,
-                            profilePath: actorData.profile_path
-                        };
-                    });
+                        name: actor.name,
+                        profilePath: actorData.profile_path
+                    };
+                });
             });
 
-            Promise.all(actorsInfo)
-                .then(actors => {
-                    const actorsList = actors.map(actor => {
-                        return `<div>
-                            <img src="https://image.tmdb.org/t/p/w185${actor.profilePath}" alt="${actor.name}">
-                            <p>${actor.name}</p>
-                        </div>`;
-                    }).join('');
+            const directorId = data.crew.find(crewMember => crewMember.job === 'Director').id;
 
-                    const modalContent = `
-                    <div class="casts">
-                        <h2>Casts</h2>
-                        <div class="actors">
-                            ${actorsList}
-                        </div>
-                    </div>
-                `;
-
-                    movieActors.innerHTML = modalContent;
-                    modal.style.display = 'block';
-                })
-                .catch(error => {
-                    console.error('Erro ao buscar dados dos atores:', error);
+            const directorInfo = fetch(`https://api.themoviedb.org/3/person/${directorId}?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
+                .then(response => response.json())
+                .then(directorData => {
+                    return {
+                        name: directorData.name,
+                        profilePath: directorData.profile_path
+                    };
                 });
+
+            return Promise.all([Promise.all(actorsInfo), directorInfo]);
+        });
+
+    const movieInfoPromise = fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
+        .then(response => response.json())
+        .then(movieData => {
+            const releaseDate = movieData.release_date;
+            const genres = movieData.genres.map(genre => genre.name).join(', ');
+            const duration = movieData.runtime;
+            const status = movieData.status;
+
+            return { releaseDate, genres, duration, status };
+        });
+
+    Promise.all([castInfoPromise, movieInfoPromise])
+        .then(([castInfo, movieInfo]) => {
+            const [actors, director] = castInfo;
+
+            const actorsList = actors.filter(actor => actor.profilePath && actor.name).map(actor => {
+                const actorImage = actor.profilePath
+                    ? `<img src="https://image.tmdb.org/t/p/w185${actor.profilePath}" alt="${actor.name}">`
+                    : '';
+            
+                return `<div>
+                    ${actorImage}
+                    <p class="actor-name">${actor.name}</p>
+                </div>`;
+            }).join('');
+
+            const directorPhoto = director.profilePath ? `<img src="https://image.tmdb.org/t/p/w185${director.profilePath}" alt="${director.name}">` : '';
+
+            const genresString = movieInfo.genres;
+            const genresList = genresString.split(',');
+            
+            const genresContent = genresList.map(genre => `<span class="genre">${genre.trim()}</span>`).join(' ');
+    
+            const modalContent = `
+                <div class="genres">
+                    ${genresContent}
+                </div>
+
+                <div class="director">
+                <div class="director-container">${directorPhoto}</div>
+                    <div class="director-info">
+                        <h2><strong>Director: </strong>${director.name}</h2>
+                        <h2><strong>Release Date: </strong>${movieInfo.releaseDate}</h2>
+                        <h2><strong>Duration: </strong>${movieInfo.duration} minutes</h2>
+                        <h2><strong>Movie Note: </strong>${voteAverage}</h2>
+                    </div>
+                </div>
+
+                <div class="overview-info">
+                    <h3 class="movieOverview">${overview}</h3>
+                </div>
+
+                <div class="casts">
+                    <h2>Casts</h2>
+                    <div class="actor">${actorsList}</div>
+                </div>
+            `;
+
+            movieActors.innerHTML = modalContent;
+            modal.style.display = 'block';
         })
         .catch(error => {
-            console.error('Erro ao buscar dados do elenco:', error);
+            console.error('Erro ao buscar dados do filme:', error);
         });
 }
-
-closeBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
 
 function saveToFavorites(movie) {
     const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
     const movieExists = favorites.some((favMovie) => favMovie.id === movie.id);
-    const tooltip = document.createElement('span');
-
-    tooltip.classList.add('tooltip');
-    tooltip.textContent = movieExists ? 'Movie is already in favorites' : 'Movie added to favorites';
-
-    const clickedIcon = event.currentTarget;
-
-    clickedIcon.parentElement.appendChild(tooltip);
-    tooltip.classList.add('active');
-
-    setTimeout(() => {
-        tooltip.classList.remove('active');
-        tooltip.remove();
-    }, 2000);
 
     if (!movieExists) favorites.push(movie);
     localStorage.setItem('favoritesMovie', JSON.stringify(favorites));
@@ -189,15 +199,11 @@ function showFavorites() {
         movieEl.classList.add('movie');
 
         movieEl.innerHTML = `
-            <img src="${IMGPATH + poster_path}" alt="${title}">
-            <div class="movie-info">
-                <h3>${title}</h3>
-                <span class="${getClassByRate(vote_average)}">${voteAverage}</span>
-            </div>
-            <div class="overview">
-                <h3>${title}</h3>
-                ${overview}
-            </div>
+        <img src="${IMGPATH + poster_path}" alt="${title}">
+        <div class="overview">
+        <h3>${title}</h3>
+        <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+        </div>
         `;
 
         const removeFromFavoritesButton = document.createElement('button');
@@ -242,7 +248,44 @@ function removeFavorite(movie) {
     showFavorites();
 }
 
-homeButton.addEventListener('click', showHomePage);
-favoritesButton.addEventListener('click', showFavorites);
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+function show() {
+    mainMenu.style.display = 'flex';
+    mainMenu.style.top = '0';
+}
+
+function close() {
+    mainMenu.style.display = "none";
+}
+
+const hamburgerLinks = document.querySelectorAll('.mainMenu li a');
+hamburgerLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 700) {
+            close();
+        }
+    });
+});
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 700) {
+        mainMenu.style.display = 'flex';
+        mainMenu.style.top = 'initial';
+    } else {
+        mainMenu.style.display = 'none';
+    }
+});
+
+window.addEventListener('load', () => {
+    if (window.innerWidth <= 700) {
+        close();
+    }
+});
+
+openMenu.addEventListener('click', show);
+closeMenu.addEventListener('click', close);
 
 showHomePage();
