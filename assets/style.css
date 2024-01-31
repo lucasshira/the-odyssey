@@ -13,7 +13,7 @@ body {
 
 header {
     background-color: #2e2e2e;
-    padding: 1.5rem;
+    padding: 1.2rem;
     display: flex;
     justify-content: flex-end;
 }
@@ -41,7 +41,7 @@ header {
     position: relative;
     background-color: #fff;
     border: 2px solid transparent;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 0.5rem 2rem 0.5rem 1rem;
     font-family: inherit;
     font-size: 1rem;
@@ -60,31 +60,38 @@ main {
 
 .movie {
     background-color: #2e2e2e;
-    width: 180px;
+    width: auto;
+    height: 280px;
     position: relative;
     display: inline-block;
-    border-radius: 3px;
+    border-radius: 5px;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
-    margin: 1rem;
+    margin: 0.8rem;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .movie img {
-    height: 300px;
-    width: 100%;
+    height: 280px;
+    width: auto;
     object-fit: cover;
     border-radius: 5px;
+    object-fit: cover;
 }
 
 .overview h3 {
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: normal;
     text-align: center;
     border: 1px solid;
-    padding: 10px;
+    padding: 12px;
     background-color: #1C1C1C;
     border: none;
     border-radius: 5px;
-    margin-top: -10px;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
 }
 
 .overview {
@@ -106,6 +113,7 @@ main {
 
 .movie:hover .overview {
     opacity: 1;
+    border-radius: 5px;
 }
 
 .movie:hover .movie-info h3,
@@ -131,63 +139,59 @@ main {
     margin-top: -35px;
 }
 
-.bookmark {
+.fa-bookmark {
+    display: none;
     position: absolute;
-    top: 12%;
-    right: 2%;
-    color: #aaa;
-    float: right;
-    font-size: 16px;
-    font-weight: bold;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 6px 30px;
-    display: flex;
-    align-items: center;
-}
-
-.bookmark i {
-    font-size: 16px;
-    margin-right: 10px;
-}
-
-.bookmark:hover,
-.bookmark:focus {
+    top: 0.50rem;
+    right: 0.50rem;
     color: #fff;
-    background-color: #2e2e2e;
-    text-decoration: none;
     cursor: pointer;
+    font-size: 30px;
+    transition: all 300ms;
 }
 
-/* .movie-button {
-    background-color: #fff;
-    border: 2px solid transparent;
-    border-radius: 15px;
-    padding: 10px 20px;
-    font-family: inherit;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
+.fa-bookmark:hover {
+    transform: translateY(10%) scale(1.2);
+}
+
+.fa-bookmark.saved {
+    color:#ffc800;
+}
+
+.remove-button {
+    display: none;
     position: absolute;
-    top: 25px;
+    top: 0.50rem;
+    right: 0.50rem;
+    cursor: pointer;
+    transition: all 300ms;
+    color: #ffc800;
+    background-color: transparent;
+    border: none;
+    outline: none;
 }
 
-#home-button {
-    left: 5%;
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh;
 }
 
-#favorites-button {
-    left: 13%;
+#prevPage, #nextPage {
+    border: 1px solid #ffc800;
+    margin: 0 8px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: #1C1C1C;
+    color: #fff;
+    cursor: pointer;
 }
 
-#genres-button {
-    left: 24%;
+#prevPage:hover, #nextPage:hover {
+    background-color: #ffc800;
+    color: #000;
 }
-
-.movie-button:hover {
-    background-color: #aaa;
-    border-color: #fff;
-} */
 
 .modal {
     display: none;
@@ -262,6 +266,7 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    color: #ffc800;
 }
 
 .casts h2 {
@@ -280,10 +285,10 @@ main {
 }
 
 .actor img {
-    width: 126px;
+    width: 136px;
     height: auto;
     border-radius: 5px;
-    margin-right: 10px;
+    margin-right: 5;
     border: 1px solid #2e2e2e;
 }
 
@@ -291,7 +296,6 @@ main {
     font-size: 14px;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 nav {
@@ -303,15 +307,21 @@ nav .mainMenu {
     display: flex;
     list-style: none;
     position: absolute;
-    right: 73%;
+    right: 75%;
 }
 
 nav .mainMenu li a {
     display: inline-block;
-    padding: 15px;
+    padding: 10px 15px;
     text-decoration: none;
     text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
     color: #fff;
+}
+
+nav .mainMenu li:hover a {
+    color: #ffc800;
 }
 
 nav .openMenu {
@@ -346,16 +356,7 @@ nav .openMenu {
     cursor: pointer;
 }
 
-@media screen and (max-width: 700px) {
-    .movie {
-        width: calc(50% - 2rem);
-        height: auto;
-        margin: 1rem;
-        padding: 0;
-        box-sizing: border-box;
-        object-fit: cover;
-    }
-
+@media screen and (max-width: 400px) {
     .genre {
         padding: 2px 2px;
         font-size: 12px;
@@ -363,11 +364,6 @@ nav .openMenu {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .movie img {
-        width: 100%;
-        height: auto;
     }
 
     .search {
@@ -405,7 +401,121 @@ nav .openMenu {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.5rem;
+        padding: 1rem;
+    }
+
+    .search-container {
+        order: 3;
+    }
+
+    .menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background-color: #2e2e2e;
+        padding: 1rem;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        order: 2;
+        transition: top 0.3s ease;
+    }
+
+    .modal-content .close {
+        position: relative;
+        left: 0;
+        padding: 5px;
+        font-size: 14px;
+        bottom: 30px;
+        margin-bottom: 15px;
+    }
+
+    nav .mainMenu {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+        transition: top 1s ease;
+        display: none;
+    }
+
+    nav .mainMenu .closeMenu {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 3;
+        color: #fff;
+    }
+
+    nav .openMenu {
+        display: block;
+    }
+
+    nav .mainMenu li a:hover {
+        background: none;
+        color: #fdfdfd;
+        font-size: 1.6rem;
+    }
+
+    .icons i {
+        display: inline-block;
+        padding: 12px;
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 549px) {
+    .genre {
+        padding: 2px 2px;
+        font-size: 12px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search {
+        font-size: small;
+    }
+
+    .casts {
+        font-size: 12px;
+    }
+    
+    .actor {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .actor img {
+        width: 110%;
+        max-width: 102px;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .movieInfo {
+        display: block;
+    }
+
+    .director-info h2 {
+        margin-bottom: 3px;
+        font-size: 12px;
+    }
+
+    header {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
     }
 
     .search-container {
@@ -481,11 +591,160 @@ nav .openMenu {
     }
 }
 
-@media screen and (min-width: 769px) and (max-width: 1023px) {
+@media screen and (min-width: 550px) and (max-width: 819px) {
+    .genre {
+        padding: 2px 2px;
+        font-size: 12px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search {
+        font-size: small;
+    }
+
+    .casts {
+        font-size: 12px;
+    }
+    
+    .actor {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .actor img {
+        width: 110%;
+        max-width: 102px;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .movieInfo {
+        display: block;
+    }
+
+    .director-info h2 {
+        margin-bottom: 3px;
+        font-size: 12px;
+    }
+
+    header {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .search-container {
+        order: 3;
+    }
+
+    .menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background-color: #2e2e2e;
+        padding: 1rem;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        order: 2;
+        transition: top 0.3s ease;
+    }
+
+    .modal-content .close {
+        position: relative;
+        left: 0;
+        padding: 5px;
+        bottom: 30px;
+        margin-bottom: 15px;
+    }
+
+    .modal-content .bookmark {
+        position: absolute;
+        text-align: center;
+        padding: 5px 10px;
+        margin: 5px 30px;
+        top: 15px;
+    }
+
+    nav .mainMenu {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+        transition: top 1s ease;
+        display: none;
+    }
+
+    nav .mainMenu .closeMenu {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 3;
+        color: #fff;
+    }
+
+    nav .openMenu {
+        display: block;
+    }
+
+    nav .mainMenu li a:hover {
+        background: none;
+        color: #fdfdfd;
+        font-size: 1.6rem;
+    }
+
+    .icons i {
+        display: inline-block;
+        padding: 12px;
+    }
+}
+
+@media screen and (min-width: 820px) and (max-width: 1274px) {
     .menu {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
         order: 2;
+    }
+
+    nav {
+        color: #fff;
+        display: flex;
+    }
+    
+    nav .mainMenu {
+        display: flex;
+        list-style: none;
+        position: absolute;
+        right: 60%;
+    }
+    
+    nav .mainMenu li a {
+        display: inline-block;
+        padding: 10px 15px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+    }
+
+    nav .openMenu {
+        font-size: 2rem;
+        margin: 20px;
+        cursor: pointer;
     }
 }
