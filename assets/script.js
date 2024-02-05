@@ -154,7 +154,7 @@ nextPageButton.addEventListener('click', () => {
     showHomePage();
 });
 
-function openMovieModal(movieId, voteAverage, overview) {
+async function openMovieModal(movieId, voteAverage, overview) {
     const castInfoPromise = fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
         .then(response => response.json())
         .then(data => {
@@ -228,7 +228,7 @@ function openMovieModal(movieId, voteAverage, overview) {
                         <h2><strong>Director: </strong>${director.name}</h2>
                         <h2><strong>Release Date: </strong>${movieInfo.releaseDate}</h2>
                         <h2><strong>Duration: </strong>${movieInfo.duration} minutes</h2>
-                        <h2><strong>Movie Note: </strong>${voteAverage}</h2>
+                        <h2><strong>Movie Rating: </strong>${voteAverage}</h2>
                     </div>
                 </div>
 
@@ -248,6 +248,10 @@ function openMovieModal(movieId, voteAverage, overview) {
         .catch(error => {
             console.error('Erro ao buscar dados do filme: ', error);
         });
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function saveToFavorites(movie) {
@@ -299,13 +303,17 @@ function showFavorites() {
 
     const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
 
+    const pagination = document.querySelector('.pagination');
+    if (pagination) {
+        pagination.style.display = 'none';
+    }
+
     favorites.forEach((movie) => {
         const { poster_path, title, vote_average, overview } = movie;
         const voteAverage = parseFloat(vote_average).toFixed(1);
 
         const movieEl = document.createElement('div');
         movieEl.classList.add('movie');
-        
 
         movieEl.innerHTML = `
         <img src="${IMGPATH + poster_path}" alt="${title}">
@@ -334,9 +342,137 @@ function showFavorites() {
         main.appendChild(movieEl);
 
         movieEl.addEventListener('click', () => {
-            openMovieModal(movie.id);
+            openMovieModal(movie.id, voteAverage, overview);
         });
     });
+}
+
+function hideMovies() {
+    const mainSection = document.getElementById('main');
+    mainSection.style.display = 'none';
+}
+
+function closeModal() {
+    const genresModalContainer = document.getElementById('genres-modal-container');
+    genresModalContainer.style.display = 'none';
+}
+
+async function showGenres() {
+    main.innerHTML = '';
+    // hideMovies();
+
+    const genresUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=1d4a1fe898c5b10f6f4ce16450f89761';
+    const response = await fetch(genresUrl);
+    const data = await response.json();
+    const genres = data.genres;
+
+    const genreModalContent = document.createElement('div');
+    genreModalContent.classList.add('genreModalContent');
+
+    const genreModal = document.createElement('div');
+    genreModal.innerHTML = '<h2>Select Genres:</h2>';
+
+    if (Array.isArray(genres)) {
+        genres.forEach(genre => {
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `genre-${genre.id}`;
+            checkbox.value = genre.id;
+
+            const label = document.createElement('label');
+            label.htmlFor = `genre-${genre.id}`;
+            label.textContent = genre.name;
+
+            genreModal.appendChild(checkbox);
+            genreModal.appendChild(label);
+        });
+    }
+
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = 'Confirm';
+    confirmButton.addEventListener('click', async () => {
+        const selectedGenres = Array.from(genreModal.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        console.log('Selected Genres:', selectedGenres);
+
+        const movies = await getMoviesByGenres(selectedGenres, currentPage);
+        console.log('Movies:', movies);
+    
+        main.innerHTML = '';
+    
+        movies.forEach(async (movie) => {
+            const { poster_path, title, vote_average, overview } = movie;
+            const voteAverage = parseFloat(vote_average).toFixed(1);
+    
+            const movieEl = document.createElement('div');
+            movieEl.classList.add('movie');
+    
+            movieEl.innerHTML = `
+                <img src="${IMGPATH + poster_path}" alt="${title}">
+                <div class="overview">
+                    <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                    <h3>${title}</h3>
+                </div>
+            `;
+    
+            const removeFromFavoritesButton = document.createElement('button');
+            removeFromFavoritesButton.classList.add('remove-button');
+            const removeFavoritesIcon = document.createElement('i');
+    
+            removeFromFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-solid');
+            removeFromFavoritesButton.classList.toggle('removeFavorite');
+            
+            removeFromFavoritesButton.appendChild(removeFavoritesIcon);
+            
+            removeFromFavoritesButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeFavorite(movie);
+                removeFavoritesIcon.classList.toggle('removeFavorite');
+            });
+    
+            movieEl.appendChild(removeFromFavoritesButton);
+            main.appendChild(movieEl);
+    
+            movieEl.addEventListener('click', () => {
+                openMovieModal(movie.id, voteAverage, overview);
+            });
+        });
+    
+        closeModal();
+    });
+
+    const closeButton = document.createElement('span');
+    closeButton.classList.add('closeModal');
+    closeButton.textContent = 'Close';
+    closeButton.addEventListener('click', () => {
+        closeModal();
+    });
+
+    genreModal.appendChild(confirmButton);
+    genreModal.appendChild(closeButton);
+    genreModalContent.appendChild(genreModal);
+
+    const genresModalContainer = document.getElementById('genres-modal-container');
+    genresModalContainer.innerHTML = '';
+    genresModalContainer.appendChild(genreModalContent);
+
+    // Exibir o modal no centro da página
+    genresModalContainer.style.display = 'flex';
+    genresModalContainer.style.alignItems = 'center';
+    genresModalContainer.style.justifyContent = 'center';
+    genresModalContainer.style.height = '100vh';
+    genresModalContainer.style.position = 'fixed';
+    genresModalContainer.style.width = '100vw';
+    genresModalContainer.style.top = '0';
+    genresModalContainer.style.left = '0';
+    genresModalContainer.style.background = 'rgba(0, 0, 0, 0.8)';
+}
+
+async function getMoviesByGenres(genreIds, page) {
+    const genreMoviesUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreIds.join(',')}&sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=${page}`;
+    console.log(`Genres movies for page ${page}...`);
+    const movies = await getMovies(genreMoviesUrl, page);
+    console.log('Movies by Genres:', movies);
+    return movies;
 }
 
 closeBtn.addEventListener('click', () => {
