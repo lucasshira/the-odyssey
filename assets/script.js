@@ -10,6 +10,7 @@ const search = document.getElementById('search');
 const searchIcon = document.querySelector('.search-icon i');
 const homeButton = document.getElementById('home-button');
 const favoritesButton = document.getElementById('favorites-button');
+const pagination = document.querySelector('.pagination');
 
 const moviePoster = document.querySelector('.movie img');
 const modal = document.getElementById('myModal');
@@ -24,7 +25,10 @@ const closeMenu = document.querySelector('.closeMenu');
 
 const prevPageButton = document.getElementById('prevPage');
 const nextPageButton = document.getElementById('nextPage');
+
 let currentPage = 1;
+let searchingForGenres = false;
+let selectedGenres = [];
 
 async function getMovies(url, page) {
     return fetch(`${url}${page}`)
@@ -55,6 +59,7 @@ async function searchMovies(query, page) {
 
 function showHomePage() {
     fetchMovies(APIURL, currentPage);
+    pagination.style.display = 'flex';
 
     async function fetchMovies(url, page) {
         console.log(`Fetching movies for page ${page}...`);
@@ -141,18 +146,6 @@ function showHomePage() {
         performSearch();
     });
 }
-
-prevPageButton.addEventListener('click', () => {
-    if (currentPage > 1) {
-        currentPage--;
-        showHomePage();
-    }
-});
-
-nextPageButton.addEventListener('click', () => {
-    currentPage++;
-    showHomePage();
-});
 
 async function openMovieModal(movieId, voteAverage, overview) {
     const castInfoPromise = fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=1d4a1fe898c5b10f6f4ce16450f89761&query=`)
@@ -303,10 +296,7 @@ function showFavorites() {
 
     const favorites = JSON.parse(localStorage.getItem('favoritesMovie')) || [];
 
-    const pagination = document.querySelector('.pagination');
-    if (pagination) {
-        pagination.style.display = 'none';
-    }
+    if (pagination) pagination.style.display = 'none';
 
     favorites.forEach((movie) => {
         const { poster_path, title, vote_average, overview } = movie;
@@ -359,6 +349,7 @@ function closeModal() {
 
 async function showGenres() {
     main.innerHTML = '';
+    pagination.style.display = 'flex';
     // hideMovies();
 
     const genresUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=1d4a1fe898c5b10f6f4ce16450f89761';
@@ -391,53 +382,14 @@ async function showGenres() {
     const confirmButton = document.createElement('button');
     confirmButton.textContent = 'Confirm';
     confirmButton.addEventListener('click', async () => {
-        const selectedGenres = Array.from(genreModal.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        selectedGenres = Array.from(genreModal.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
         console.log('Selected Genres:', selectedGenres);
-
-        const movies = await getMoviesByGenres(selectedGenres, currentPage);
-        console.log('Movies:', movies);
     
-        main.innerHTML = '';
-    
-        movies.forEach(async (movie) => {
-            const { poster_path, title, vote_average, overview } = movie;
-            const voteAverage = parseFloat(vote_average).toFixed(1);
-    
-            const movieEl = document.createElement('div');
-            movieEl.classList.add('movie');
-    
-            movieEl.innerHTML = `
-                <img src="${IMGPATH + poster_path}" alt="${title}">
-                <div class="overview">
-                    <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
-                    <h3>${title}</h3>
-                </div>
-            `;
-    
-            const removeFromFavoritesButton = document.createElement('button');
-            removeFromFavoritesButton.classList.add('remove-button');
-            const removeFavoritesIcon = document.createElement('i');
-    
-            removeFromFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-solid');
-            removeFromFavoritesButton.classList.toggle('removeFavorite');
-            
-            removeFromFavoritesButton.appendChild(removeFavoritesIcon);
-            
-            removeFromFavoritesButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                removeFavorite(movie);
-                removeFavoritesIcon.classList.toggle('removeFavorite');
-            });
-    
-            movieEl.appendChild(removeFromFavoritesButton);
-            main.appendChild(movieEl);
-    
-            movieEl.addEventListener('click', () => {
-                openMovieModal(movie.id, voteAverage, overview);
-            });
-        });
-    
-        closeModal();
+        if (selectedGenres.length > 0) {
+            showMoviesByGenres(selectedGenres, currentPage);
+        } else {
+            console.log('No genres selected.');
+        }
     });
 
     const closeButton = document.createElement('span');
@@ -467,16 +419,95 @@ async function showGenres() {
     genresModalContainer.style.background = 'rgba(0, 0, 0, 0.8)';
 }
 
+async function showMoviesByGenres(genreIds, currentPage) {
+    const movies = await getMoviesByGenres(genreIds, currentPage);
+    console.log('Movies:', movies);
+
+    pagination.style.display = 'flex';
+    main.innerHTML = '';
+
+    movies.forEach(async (movie) => {
+        const { poster_path, title, vote_average, overview } = movie;
+        const voteAverage = parseFloat(vote_average).toFixed(1);
+
+        const movieEl = document.createElement('div');
+        movieEl.classList.add('movie');
+
+        movieEl.innerHTML = `
+            <img src="${IMGPATH + poster_path}" alt="${title}">
+            <div class="overview">
+                <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                <h3>${title}</h3>
+            </div>
+        `;
+
+        const addToFavoritesButton = document.createElement('button');
+        const addToFavoritesIcon = document.createElement('i');
+        addToFavoritesIcon.classList.add('fa', 'fa-bookmark', 'fa-regular');
+        addToFavoritesButton.style.display = 'none';
+
+        addToFavoritesButton.dataset.movieId = movie.id;
+
+        addToFavoritesButton.appendChild(addToFavoritesIcon);
+
+        addToFavoritesButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            saveToFavorites(movie);
+            updateFavoriteIcon(movie.id);
+            addToFavoritesIcon.classList.add('fa', 'fa-bookmark', 'fa-solid');
+        });
+
+        movieEl.appendChild(addToFavoritesButton);
+        main.appendChild(movieEl);
+
+        movieEl.addEventListener('mouseenter', () => {
+            addToFavoritesButton.style.display = 'flex';
+        });
+
+        movieEl.addEventListener('mouseleave', () => {
+            addToFavoritesButton.style.display = 'none';
+        });
+
+        movieEl.addEventListener('click', () => {
+            const movieId = movie.id;
+            openMovieModal(movieId, voteAverage, overview);
+        });
+    });
+
+    closeModal();
+}
+
 async function getMoviesByGenres(genreIds, page) {
-    const genreMoviesUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreIds.join(',')}&sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=${page}`;
-    console.log(`Genres movies for page ${page}...`);
-    const movies = await getMovies(genreMoviesUrl, page);
-    console.log('Movies by Genres:', movies);
-    return movies;
+    searchingForGenres = true;
+        const genreMoviesUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreIds}&sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=${page}`;
+        console.log(`Genres movies for page ${page}... ${genreIds}`);
+        const movies = await getMovies(genreMoviesUrl, page);
+        return movies;
 }
 
 closeBtn.addEventListener('click', () => {
     modal.style.display = 'none';
+});
+
+prevPageButton.addEventListener('click', () => {
+    if (currentPage > 1 && searchingForGenres === true) {
+        currentPage--;
+        showMoviesByGenres(selectedGenres, currentPage);
+    } else if (currentPage > 1) {
+        currentPage--;
+        showHomePage();
+    }
+});
+
+nextPageButton.addEventListener('click', () => {
+    if (searchingForGenres === true) {
+        currentPage++;
+        showMoviesByGenres(selectedGenres, currentPage);
+        console.log(selectedGenres);
+    } else {
+        currentPage++;
+        showHomePage();
+    }
 });
 
 function show() {
