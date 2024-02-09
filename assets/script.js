@@ -60,6 +60,7 @@ async function searchMovies(query, page) {
 function showHomePage() {
     fetchMovies(APIURL, currentPage);
     pagination.style.display = 'flex';
+    searchingForGenres = false;
 
     async function fetchMovies(url, page) {
         console.log(`Fetching movies for page ${page}...`);
@@ -126,6 +127,7 @@ function showHomePage() {
         if (searchTerm) {
             try {
                 currentPage = 1;
+                pagination.style.display = 'none';
                 const movies = await searchMovies(searchTerm, currentPage);
                 showMovies(movies);
             } catch (error) {
@@ -361,6 +363,7 @@ async function showGenres() {
     genreModalContent.classList.add('genreModalContent');
 
     const genreModal = document.createElement('div');
+    genreModal.classList.add('genreModal');
     genreModal.innerHTML = '<h2>Select Genres:</h2>';
 
     if (Array.isArray(genres)) {
@@ -369,10 +372,12 @@ async function showGenres() {
             checkbox.type = 'checkbox';
             checkbox.id = `genre-${genre.id}`;
             checkbox.value = genre.id;
+            checkbox.classList.add('genreCheckbox');
 
             const label = document.createElement('label');
             label.htmlFor = `genre-${genre.id}`;
             label.textContent = genre.name;
+            label.classList.add('genreLabel');
 
             genreModal.appendChild(checkbox);
             genreModal.appendChild(label);
@@ -381,6 +386,8 @@ async function showGenres() {
 
     const confirmButton = document.createElement('button');
     confirmButton.textContent = 'Confirm';
+    confirmButton.classList.add('confirmButton');
+
     confirmButton.addEventListener('click', async () => {
         selectedGenres = Array.from(genreModal.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
         console.log('Selected Genres:', selectedGenres);
@@ -394,7 +401,7 @@ async function showGenres() {
 
     const closeButton = document.createElement('span');
     closeButton.classList.add('closeModal');
-    closeButton.textContent = 'Close';
+    closeButton.innerHTML = '<i class="fas fa-times"></i>';
     closeButton.addEventListener('click', () => {
         closeModal();
     });
@@ -407,7 +414,6 @@ async function showGenres() {
     genresModalContainer.innerHTML = '';
     genresModalContainer.appendChild(genreModalContent);
 
-    // Exibir o modal no centro da página
     genresModalContainer.style.display = 'flex';
     genresModalContainer.style.alignItems = 'center';
     genresModalContainer.style.justifyContent = 'center';
@@ -493,6 +499,7 @@ prevPageButton.addEventListener('click', () => {
     if (currentPage > 1 && searchingForGenres === true) {
         currentPage--;
         showMoviesByGenres(selectedGenres, currentPage);
+        console.log(searchingForGenres);
     } else if (currentPage > 1) {
         currentPage--;
         showHomePage();
@@ -504,6 +511,7 @@ nextPageButton.addEventListener('click', () => {
         currentPage++;
         showMoviesByGenres(selectedGenres, currentPage);
         console.log(selectedGenres);
+        console.log(searchingForGenres);
     } else {
         currentPage++;
         showHomePage();
