@@ -131,7 +131,7 @@ main {
     align-items: flex-start;
     z-index: 1;
     width: 20%;
-    height: 35%;
+    height: 34%;
     overflow: hidden;
     background-color: #fefefe;
     margin: 40px auto;
@@ -158,6 +158,7 @@ main {
 .genreLabel {
     font-weight: bold;
     cursor: pointer;
+    font-size: 18px;
 }
 
 .confirmButton {
@@ -165,7 +166,7 @@ main {
     color: #fff;
     font-weight: bold;
     border: none;
-    padding: 10px 60px;
+    padding: 10px 80px;
     border-radius: 5px;
     cursor: pointer;
     display: block;
@@ -446,9 +447,9 @@ nav .openMenu {
     cursor: pointer;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 374px) {
     .genre {
-        padding: 2px 2px;
+        padding: 1px 1px;
         font-size: 12px;
         text-align: center;
         display: flex;
@@ -530,6 +531,57 @@ nav .openMenu {
         margin-bottom: 15px;
     }
 
+    .genreModalContent {
+        position: relative;
+        display: none;
+        justify-content: center;
+        align-items: flex-start;
+        z-index: 1;
+        width: 20%;
+        height: 55%;
+        overflow: hidden;
+        background-color: #fefefe;
+        margin: 40px auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 90%;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .genreModal h2 {
+        padding: 10px;
+        margin-top: -20px;
+        font-size: 18px;
+    }
+    
+    .genreCheckbox {
+        margin: 5px;
+        cursor: pointer;
+        width: 10px;
+    }
+    
+    .genreLabel {
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    
+    .confirmButton {
+        background-color: #2e2e2e;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        padding: 10px 60px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 15px auto;
+        margin-bottom: -10px;
+    }
+
     nav .mainMenu {
         height: 100vh;
         position: fixed;
@@ -548,7 +600,7 @@ nav .openMenu {
     nav .mainMenu .closeMenu {
         display: block;
         position: absolute;
-        top: 20px;
+        top: 10px;
         right: 20px;
         z-index: 3;
         color: #fff;
@@ -571,7 +623,21 @@ nav .openMenu {
     }
 }
 
-@media screen and (min-width: 401px) and (max-width: 549px) {
+@media screen and (min-width: 375px) and (max-width: 549px) {
+    .movie {
+        width: 40%;
+        height: auto;
+        margin: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .movie img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
     .genre {
         padding: 2px 2px;
         font-size: 12px;
@@ -608,7 +674,7 @@ nav .openMenu {
 
     .director-info h2 {
         margin-bottom: 3px;
-        font-size: 12px;
+        font-size: 15px;
     }
 
     header {
@@ -639,7 +705,7 @@ nav .openMenu {
     .modal-content .close {
         position: relative;
         left: 0;
-        padding: 5px;
+        padding: 3px;
         bottom: 30px;
         margin-bottom: 15px;
     }
@@ -650,6 +716,57 @@ nav .openMenu {
         padding: 5px 10px;
         margin: 5px 30px;
         top: 15px;
+    }
+
+    .genreModalContent {
+        position: relative;
+        display: none;
+        justify-content: center;
+        align-items: flex-start;
+        z-index: 1;
+        width: 30%;
+        height: 45%;
+        overflow: hidden;
+        background-color: #fefefe;
+        margin: 40px auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 90%;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .genreModal h2 {
+        font-size: 18px;
+        padding: 10px;
+        margin-top: -20px;
+    }
+    
+    .genreCheckbox {
+        margin: 5px;
+        cursor: pointer;
+        width: 10px;
+    }
+    
+    .genreLabel {
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .confirmButton {
+        background-color: #2e2e2e;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        padding: 10px 80px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 15px auto;
+        margin-bottom: -10px;
     }
 
     nav .mainMenu {
@@ -670,7 +787,7 @@ nav .openMenu {
     nav .mainMenu .closeMenu {
         display: block;
         position: absolute;
-        top: 20px;
+        top: 10px;
         right: 20px;
         z-index: 3;
         color: #fff;
@@ -693,14 +810,14 @@ nav .openMenu {
 }
 
 @media screen and (min-width: 550px) and (max-width: 819px) {
-    .genre {
+    /* .genre {
         padding: 2px 2px;
         font-size: 12px;
         text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
+    } */
 
     .search {
         font-size: small;
@@ -729,7 +846,7 @@ nav .openMenu {
 
     .director-info h2 {
         margin-bottom: 3px;
-        font-size: 12px;
+        font-size: 16px;
     }
 
     header {
@@ -757,20 +874,63 @@ nav .openMenu {
         transition: top 0.3s ease;
     }
 
-    .modal-content .close {
-        position: relative;
-        left: 0;
-        padding: 5px;
-        bottom: 30px;
-        margin-bottom: 15px;
-    }
-
     .modal-content .bookmark {
         position: absolute;
         text-align: center;
         padding: 5px 10px;
         margin: 5px 30px;
         top: 15px;
+    }
+
+    
+    .genreModalContent {
+        position: relative;
+        display: none;
+        justify-content: center;
+        align-items: flex-start;
+        z-index: 1;
+        width: 30%;
+        height: 40%;
+        overflow: hidden;
+        background-color: #fefefe;
+        margin: 40px auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 90%;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .genreModal h2 {
+        padding: 10px;
+        margin-top: -20px;
+        font-size: 20px;
+    }
+    
+    .genreCheckbox {
+        margin: 5px;
+        cursor: pointer;
+        width: 10px;
+    }
+    
+    .genreLabel {
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .confirmButton {
+        background-color: #2e2e2e;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        padding: 10px 80px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 15px auto;
+        margin-bottom: -10px;
     }
 
     nav .mainMenu {
@@ -791,7 +951,7 @@ nav .openMenu {
     nav .mainMenu .closeMenu {
         display: block;
         position: absolute;
-        top: 20px;
+        top: 10px;
         right: 20px;
         z-index: 3;
         color: #fff;
