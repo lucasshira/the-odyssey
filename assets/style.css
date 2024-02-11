@@ -62,7 +62,7 @@ main {
 
 .movie {
     background-color: #2e2e2e;
-    width: auto;
+    width: 185px;
     height: 280px;
     position: relative;
     display: inline-block;
@@ -74,9 +74,8 @@ main {
 }
 
 .movie img {
-    height: 280px;
+    height: 100%;
     width: auto;
-    object-fit: cover;
     border-radius: 5px;
     object-fit: cover;
 }
@@ -191,26 +190,6 @@ main {
 
 .closeModal:hover {
     transform: scale(1.2);
-}
-
-#loading-spinner {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -25px;
-    margin-left: -25px;
-    display: none;
-}
-  
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .genres {
@@ -674,7 +653,7 @@ nav .openMenu {
 
     .director-info h2 {
         margin-bottom: 3px;
-        font-size: 15px;
+        font-size: 12px;
     }
 
     header {
@@ -682,7 +661,7 @@ nav .openMenu {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
+        padding: 0.50rem;
     }
 
     .search-container {
@@ -810,15 +789,6 @@ nav .openMenu {
 }
 
 @media screen and (min-width: 550px) and (max-width: 819px) {
-    /* .genre {
-        padding: 2px 2px;
-        font-size: 12px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    } */
-
     .search {
         font-size: small;
     }
