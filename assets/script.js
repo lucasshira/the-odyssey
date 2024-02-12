@@ -364,7 +364,7 @@ async function showGenres() {
 
     const genreModal = document.createElement('div');
     genreModal.classList.add('genreModal');
-    genreModal.innerHTML = '<h2>Select Genres:</h2>';
+    genreModal.innerHTML = '<h2>Genres:</h2>';
 
     if (Array.isArray(genres)) {
         genres.forEach(genre => {
@@ -404,6 +404,7 @@ async function showGenres() {
     closeButton.innerHTML = '<i class="fas fa-times"></i>';
     closeButton.addEventListener('click', () => {
         closeModal();
+        showHomePage();
     });
 
     genreModal.appendChild(confirmButton);
@@ -504,6 +505,7 @@ prevPageButton.addEventListener('click', () => {
         currentPage--;
         showHomePage();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 nextPageButton.addEventListener('click', () => {
@@ -516,6 +518,7 @@ nextPageButton.addEventListener('click', () => {
         currentPage++;
         showHomePage();
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 function show() {
@@ -537,7 +540,7 @@ hamburgerLinks.forEach(link => {
 });
 
 window.addEventListener('resize', () => {
-    if (window.innerWidth > 820) {
+    if (window.innerWidth > 821) {
         mainMenu.style.display = 'flex';
         mainMenu.style.top = 'initial';
     } else {
