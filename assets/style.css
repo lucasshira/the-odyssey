@@ -130,7 +130,7 @@ main {
     align-items: flex-start;
     z-index: 1;
     width: 20%;
-    height: 34%;
+    height: auto;
     overflow: hidden;
     background-color: #fefefe;
     margin: 40px auto;
@@ -471,6 +471,10 @@ nav .openMenu {
         display: block;
     }
 
+    .overview h3 {
+        display: none;
+    }
+
     .director-info h2 {
         margin-bottom: 3px;
         font-size: 12px;
@@ -517,7 +521,7 @@ nav .openMenu {
         align-items: flex-start;
         z-index: 1;
         width: 20%;
-        height: 55%;
+        height: auto;
         overflow: hidden;
         background-color: #fefefe;
         margin: 40px auto;
@@ -614,7 +618,12 @@ nav .openMenu {
     .movie img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        display: block;
+    }
+
+    .overview h3 {
+        display: none;
     }
 
     .genre {
@@ -661,7 +670,7 @@ nav .openMenu {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.50rem;
+        padding: 0.25rem;
     }
 
     .search-container {
@@ -704,7 +713,7 @@ nav .openMenu {
         align-items: flex-start;
         z-index: 1;
         width: 30%;
-        height: 45%;
+        height: auto;
         overflow: hidden;
         background-color: #fefefe;
         margin: 40px auto;
@@ -789,10 +798,6 @@ nav .openMenu {
 }
 
 @media screen and (min-width: 550px) and (max-width: 819px) {
-    .search {
-        font-size: small;
-    }
-
     .casts {
         font-size: 12px;
     }
@@ -824,7 +829,7 @@ nav .openMenu {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
+        padding: 0.25rem;
     }
 
     .search-container {
@@ -860,7 +865,7 @@ nav .openMenu {
         align-items: flex-start;
         z-index: 1;
         width: 30%;
-        height: 40%;
+        height: auto;
         overflow: hidden;
         background-color: #fefefe;
         margin: 40px auto;
