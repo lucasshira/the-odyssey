@@ -11,6 +11,7 @@ const searchIcon = document.querySelector('.search-icon i');
 const homeButton = document.getElementById('home-button');
 const favoritesButton = document.getElementById('favorites-button');
 const pagination = document.querySelector('.pagination');
+const copyright = document.querySelector('.copyright');
 
 const moviePoster = document.querySelector('.movie img');
 const modal = document.getElementById('myModal');
@@ -60,6 +61,7 @@ async function searchMovies(query, page) {
 function showHomePage() {
     fetchMovies(APIURL, currentPage);
     pagination.style.display = 'flex';
+    copyright.style.display = 'block';
     searchingForGenres = false;
 
     async function fetchMovies(url, page) {
@@ -352,6 +354,7 @@ function closeModal() {
 async function showGenres() {
     main.innerHTML = '';
     pagination.style.display = 'flex';
+    copyright.style.display = 'none';
     // hideMovies();
 
     const genresUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=1d4a1fe898c5b10f6f4ce16450f89761';
@@ -431,6 +434,7 @@ async function showMoviesByGenres(genreIds, currentPage) {
     console.log('Movies:', movies);
 
     pagination.style.display = 'flex';
+    copyright.style.display = 'block';
     main.innerHTML = '';
 
     movies.forEach(async (movie) => {
@@ -540,7 +544,7 @@ hamburgerLinks.forEach(link => {
 });
 
 window.addEventListener('resize', () => {
-    if (window.innerWidth > 821) {
+    if (window.innerWidth > 819) {
         mainMenu.style.display = 'flex';
         mainMenu.style.top = 'initial';
     } else {
