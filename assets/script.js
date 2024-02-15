@@ -80,14 +80,27 @@ function showHomePage() {
     
             const movieEl = document.createElement('div');
             movieEl.classList.add('movie');
-    
+
+        if (!poster_path) {
             movieEl.innerHTML = `
-                <img src="${IMGPATH + poster_path}" alt="${title}">
+                <div class="image-not-found">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <p>Image Unavailable</p>
+                </div>
                 <div class="overview">
-                <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
-                <h3>${title}</h3>
+                    <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                    <h3>${title}</h3>
                 </div>
             `;
+            } else {
+                movieEl.innerHTML = `
+                    <img src="${IMGPATH + poster_path}" alt="${title}">
+                    <div class="overview">
+                        <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                        <h3>${title}</h3>
+                    </div>
+                `;
+            }
 
             const addToFavoritesButton = document.createElement('button');
             const addToFavoritesIcon = document.createElement('i');
@@ -444,13 +457,26 @@ async function showMoviesByGenres(genreIds, currentPage) {
         const movieEl = document.createElement('div');
         movieEl.classList.add('movie');
 
-        movieEl.innerHTML = `
-            <img src="${IMGPATH + poster_path}" alt="${title}">
-            <div class="overview">
-                <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
-                <h3>${title}</h3>
-            </div>
-        `;
+        if (!poster_path) {
+            movieEl.innerHTML = `
+                <div class="image-not-found">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <p>Image Unavailable</p>
+                </div>
+                <div class="overview">
+                    <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                    <h3>${title}</h3>
+                </div>
+            `;
+            } else {
+                movieEl.innerHTML = `
+                    <img src="${IMGPATH + poster_path}" alt="${title}">
+                    <div class="overview">
+                        <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                        <h3>${title}</h3>
+                    </div>
+                `;
+            }
 
         const addToFavoritesButton = document.createElement('button');
         const addToFavoritesIcon = document.createElement('i');
@@ -490,10 +516,10 @@ async function showMoviesByGenres(genreIds, currentPage) {
 
 async function getMoviesByGenres(genreIds, page) {
     searchingForGenres = true;
-        const genreMoviesUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreIds}&sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=${page}`;
-        console.log(`Genres movies for page ${page}... ${genreIds}`);
-        const movies = await getMovies(genreMoviesUrl, page);
-        return movies;
+    const genreMoviesUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreIds}&sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=${page}`;
+    console.log(`Genres movies for page ${page}... ${genreIds}`);
+    const movies = await getMovies(genreMoviesUrl);
+    return movies;
 }
 
 closeBtn.addEventListener('click', () => {
