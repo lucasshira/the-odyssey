@@ -241,6 +241,19 @@ main {
     outline: none;
 }
 
+.noFavorites {
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    margin: 110px auto;
+    color: #ffc800;
+}
+
+.noFavorites i {
+    font-size: 40px;
+    margin: 10px;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -445,15 +458,15 @@ nav .openMenu {
 
 footer {
     display: block;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .copyright {
     font-size: .9rem;
     text-decoration: none;
     position: relative;
-    color: #fdfdfd;
-    background: linear-gradient(to right, #000000, #ffffff, #000000);
+    color: #ADB5BD;
+    background: linear-gradient(to right, #000000, #ADB5BD, #000000);
     background-size: auto 1px;
     background-repeat: repeat-x;
     background-position: 0 0.5em;
