@@ -315,43 +315,72 @@ function showFavorites() {
 
     if (pagination) pagination.style.display = 'none';
 
-    favorites.forEach((movie) => {
-        const { poster_path, title, vote_average, overview } = movie;
-        const voteAverage = parseFloat(vote_average).toFixed(1);
-
-        const movieEl = document.createElement('div');
-        movieEl.classList.add('movie');
-
-        movieEl.innerHTML = `
-        <img src="${IMGPATH + poster_path}" alt="${title}">
-        <div class="overview">
-        <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
-        <h3>${title}</h3>
-        </div>
-        `;
-
-        const removeFromFavoritesButton = document.createElement('button');
-        removeFromFavoritesButton.classList.add('remove-button');
-        const removeFavoritesIcon = document.createElement('i');
-
-        removeFromFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-solid');
-        removeFromFavoritesButton.classList.toggle('removeFavorite');
-        
-        removeFromFavoritesButton.appendChild(removeFavoritesIcon);
-        
-        removeFromFavoritesButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            removeFavorite(movie);
-            removeFavoritesIcon.classList.toggle('removeFavorite');
+    if (favorites.length === 0) {
+        const noFavoritesContainer = document.createElement('div');
+        noFavoritesContainer.classList.add('noFavorites');
+    
+        const exclamationIcon = document.createElement('i');
+        exclamationIcon.classList.add('fa-solid', 'fa-triangle-exclamation');
+    
+        const messageText = document.createElement('div');
+        messageText.textContent = 'You dont have any bookmarks yet.';
+    
+        noFavoritesContainer.appendChild(exclamationIcon);
+        noFavoritesContainer.appendChild(messageText);
+    
+        main.appendChild(noFavoritesContainer);
+    } else {
+        favorites.forEach((movie) => {
+            const { poster_path, title, vote_average, overview } = movie;
+            const voteAverage = parseFloat(vote_average).toFixed(1);
+    
+            const movieEl = document.createElement('div');
+            movieEl.classList.add('movie');
+    
+            if (!poster_path) {
+                movieEl.innerHTML = `
+                    <div class="image-not-found">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <p>Image Unavailable</p>
+                    </div>
+                    <div class="overview">
+                        <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                        <h3>${title}</h3>
+                    </div>
+                `;
+            } else {
+                movieEl.innerHTML = `
+                    <img src="${IMGPATH + poster_path}" alt="${title}">
+                    <div class="overview">
+                        <p class="expand"><i class="fa-solid fa-maximize"></i> Expand</p>
+                        <h3>${title}</h3>
+                    </div>
+                `;
+            }
+    
+            const removeFromFavoritesButton = document.createElement('button');
+            removeFromFavoritesButton.classList.add('remove-button');
+            const removeFavoritesIcon = document.createElement('i');
+    
+            removeFromFavoritesButton.classList.add('fa', 'fa-bookmark', 'fa-solid');
+            removeFromFavoritesButton.classList.toggle('removeFavorite');
+            
+            removeFromFavoritesButton.appendChild(removeFavoritesIcon);
+            
+            removeFromFavoritesButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeFavorite(movie);
+                removeFavoritesIcon.classList.toggle('removeFavorite');
+            });
+    
+            movieEl.appendChild(removeFromFavoritesButton);
+            main.appendChild(movieEl);
+    
+            movieEl.addEventListener('click', () => {
+                openMovieModal(movie.id, voteAverage, overview);
+            });
         });
-
-        movieEl.appendChild(removeFromFavoritesButton);
-        main.appendChild(movieEl);
-
-        movieEl.addEventListener('click', () => {
-            openMovieModal(movie.id, voteAverage, overview);
-        });
-    });
+    }
 }
 
 function hideMovies() {
