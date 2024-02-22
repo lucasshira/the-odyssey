@@ -1,4 +1,3 @@
-// const APIKEY = '1d4a1fe898c5b10f6f4ce16450f89761';
 const APIURL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=';
 
 const IMGPATH = 'https://image.tmdb.org/t/p/w1280';
@@ -35,7 +34,6 @@ async function getMovies(url, page) {
     return fetch(`${url}${page}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Search Results:', data.results);
             return data.results;
         })
         .catch(error => {
@@ -49,7 +47,6 @@ async function searchMovies(query, page) {
     return fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log('Search Results:', data.results);
             return data.results;
         })
         .catch(error => {
@@ -65,7 +62,6 @@ function showHomePage() {
     searchingForGenres = false;
 
     async function fetchMovies(url, page) {
-        console.log(`Fetching movies for page ${page}...`);
         const movies = await getMovies(url, page);
         showMovies(movies);
     }
@@ -228,9 +224,9 @@ async function openMovieModal(movieId, voteAverage, overview) {
             const genresContent = genresList.map(genre => `<span class="genre">${genre.trim()}</span>`).join(' ');
     
             const modalContent = `
-                <div class="genres">
-                    ${genresContent}
-                </div>
+                <ul class="genres">
+                    <li>${genresContent}</li>
+                </ul>
 
                 <div class="director">
                 <div class="director-container">${directorPhoto}</div>
@@ -270,7 +266,6 @@ function saveToFavorites(movie) {
     const tooltip = document.createElement('span');
 
     tooltip.classList.add('tooltip');
-    // tooltip.textContent = movieExists ? 'Movie is already in favorites' : 'Movie added to favorites';
 
     const clickedIcon = event.currentTarget;
 
@@ -397,7 +392,6 @@ async function showGenres() {
     main.innerHTML = '';
     pagination.style.display = 'flex';
     copyright.style.display = 'none';
-    // hideMovies();
 
     const genresUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=1d4a1fe898c5b10f6f4ce16450f89761';
     const response = await fetch(genresUrl);
@@ -435,7 +429,6 @@ async function showGenres() {
 
     confirmButton.addEventListener('click', async () => {
         selectedGenres = Array.from(genreModal.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
-        console.log('Selected Genres:', selectedGenres);
     
         if (selectedGenres.length > 0) {
             showMoviesByGenres(selectedGenres, currentPage);
@@ -473,7 +466,6 @@ async function showGenres() {
 
 async function showMoviesByGenres(genreIds, currentPage) {
     const movies = await getMoviesByGenres(genreIds, currentPage);
-    console.log('Movies:', movies);
 
     pagination.style.display = 'flex';
     copyright.style.display = 'block';
@@ -546,7 +538,6 @@ async function showMoviesByGenres(genreIds, currentPage) {
 async function getMoviesByGenres(genreIds, page) {
     searchingForGenres = true;
     const genreMoviesUrl = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreIds}&sort_by=popularity.desc&api_key=1d4a1fe898c5b10f6f4ce16450f89761&page=${page}`;
-    console.log(`Genres movies for page ${page}... ${genreIds}`);
     const movies = await getMovies(genreMoviesUrl);
     return movies;
 }
@@ -559,7 +550,6 @@ prevPageButton.addEventListener('click', () => {
     if (currentPage > 1 && searchingForGenres === true) {
         currentPage--;
         showMoviesByGenres(selectedGenres, currentPage);
-        console.log(searchingForGenres);
     } else if (currentPage > 1) {
         currentPage--;
         showHomePage();
@@ -571,8 +561,6 @@ nextPageButton.addEventListener('click', () => {
     if (searchingForGenres === true) {
         currentPage++;
         showMoviesByGenres(selectedGenres, currentPage);
-        console.log(selectedGenres);
-        console.log(searchingForGenres);
     } else {
         currentPage++;
         showHomePage();
