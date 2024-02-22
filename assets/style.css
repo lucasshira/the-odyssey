@@ -158,6 +158,12 @@ main {
     font-weight: bold;
     cursor: pointer;
     font-size: 18px;
+    transition: all 100ms;
+}
+
+.genreLabel:hover {
+    color: #ffc800;
+    font-size: 19px;
 }
 
 .confirmButton {
@@ -181,7 +187,7 @@ main {
     position: absolute;
     top: 0;
     font-size: 26px;
-    right: 1%;
+    right: 1.5%;
     top: 2%;
     cursor: pointer;
     font-weight: bold;
@@ -189,12 +195,15 @@ main {
 }
 
 .closeModal:hover {
+    color: #ffc800;
     transform: scale(1.2);
 }
 
 .genres {
     display: flex;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
+    list-style-type: none;
+    margin-top: -25px;
 }
 
 .genre {
@@ -206,7 +215,7 @@ main {
     border-radius: 5px;
     padding: 5px 20px;
     margin-right: 5px;
-    margin-top: -35px;
+    border: none;
 }
 
 .fa-bookmark {
@@ -267,7 +276,7 @@ main {
     padding: 10px 20px;
     border-radius: 100px;
     background-color: #1C1C1C;
-    color: #fff;
+    color: #ffc800;
     cursor: pointer;
 }
 
@@ -498,13 +507,23 @@ footer {
 }
 
 @media screen and (max-width: 374px) {
+    .genres {
+        padding: 2px 2px;
+        font-size: small;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-top: -30px;
+    }
+    
     .genre {
-        padding: 1px 1px;
-        font-size: 12px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: inline-block;
+        margin-bottom: 5px;
+        background-color: #1C1C1C;
+        color: white;
+        font-size: small;
+        border-radius: 5px;
+        padding: 6px 3px;
     }
 
     .search {
@@ -519,6 +538,10 @@ footer {
         position: absolute;
         right: 40px;
         z-index: 1;
+    }
+
+    .movieOverview {
+        font-size: 14px;
     }
 
     .casts {
@@ -563,6 +586,19 @@ footer {
         order: 3;
     }
 
+    .noFavorites {
+        text-align: center;
+        padding: 20px;
+        font-size: 16px;
+        margin: 110px auto;
+        color: #ffc800;
+    }
+    
+    .noFavorites i {
+        font-size: 35px;
+        margin: 10px;
+    }
+
     .menu {
         display: none;
         position: absolute;
@@ -574,6 +610,13 @@ footer {
         z-index: 2;
         order: 2;
         transition: top 0.3s ease;
+    }
+
+    .modal-content {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 90%;
+        margin: 0 auto;
     }
 
     .modal-content .close {
@@ -699,17 +742,31 @@ footer {
         display: none;
     }
 
-    .genre {
+    .genres {
         padding: 2px 2px;
-        font-size: 12px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        font-size: small;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-top: -30px;
+    }
+    
+    .genre {
+        display: inline-block;
+        margin-bottom: 5px;
+        background-color: #1C1C1C;
+        color: white;
+        font-size: small;
+        border-radius: 5px;
+        padding: 8px 4px;
     }
 
     .search {
         font-size: small;
+    }
+
+    .movieOverview {
+        font-size: 14px;
     }
 
     .casts {
@@ -748,6 +805,19 @@ footer {
 
     .search-container {
         order: 3;
+    }
+
+    .noFavorites {
+        text-align: center;
+        padding: 20px;
+        font-size: 16px;
+        margin: 110px auto;
+        color: #ffc800;
+    }
+    
+    .noFavorites i {
+        font-size: 35px;
+        margin: 10px;
     }
 
     .menu {
