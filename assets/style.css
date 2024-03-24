@@ -201,9 +201,16 @@ main {
 
 .genres {
     display: flex;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
     list-style-type: none;
-    margin-top: -25px;
+    margin-top: -20px;
+}
+
+.genres li {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: auto;
 }
 
 .genre {
@@ -394,17 +401,19 @@ main {
 }
 
 .actor img {
-    width: 136px;
+    width: 133px;
     height: auto;
     border-radius: 5px;
-    margin-right: 5;
+    margin-right: 5px;
     border: 1px solid #2e2e2e;
 }
 
 .actor-name {
     font-size: 14px;
+    max-width: 136px;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav {
@@ -506,14 +515,14 @@ footer {
     transform: scaleX(1);
 }
 
-@media screen and (max-width: 374px) {
+@media screen and (max-width: 375px) {
     .genres {
-        padding: 2px 2px;
+        padding: 2px 4px;
         font-size: small;
         list-style-type: none;
         margin: 0;
         padding: 0;
-        margin-top: -30px;
+        margin-top: -40px;
     }
     
     .genre {
@@ -521,7 +530,7 @@ footer {
         margin-bottom: 5px;
         background-color: #1C1C1C;
         color: white;
-        font-size: small;
+        font-size: smaller;
         border-radius: 5px;
         padding: 6px 3px;
     }
@@ -552,6 +561,10 @@ footer {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+    }
+
+    .actor-name {
+        font-size: smaller;
     }
     
     .actor img {
@@ -720,7 +733,7 @@ footer {
     }
 }
 
-@media screen and (min-width: 375px) and (max-width: 549px) {
+@media screen and (min-width: 375px) and (max-width: 550px) {
     .movie {
         width: 161px;
         height: 240px;
@@ -743,12 +756,16 @@ footer {
     }
 
     .genres {
-        padding: 2px 2px;
+        display: flex;
         font-size: small;
         list-style-type: none;
-        margin: 0;
-        padding: 0;
-        margin-top: -30px;
+        margin: -8px;
+        margin-top: -40px;
+    }
+    
+    .genres li {
+        border-radius: 5px;
+        padding: 4px 8px;
     }
     
     .genre {
@@ -756,9 +773,9 @@ footer {
         margin-bottom: 5px;
         background-color: #1C1C1C;
         color: white;
-        font-size: small;
+        font-size: smaller;
         border-radius: 5px;
-        padding: 8px 4px;
+        padding: auto;
     }
 
     .search {
@@ -775,8 +792,20 @@ footer {
     
     .actor {
         display: flex;
+        margin: 0;
+        justify-content: space-around;
+        align-items: flex-start;
+        text-align: center;
         flex-wrap: wrap;
         gap: 10px;
+    }
+
+    .actor-name {
+        font-size: 14px;
+        max-width: 102px;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-wrap: break-word;
     }
     
     .actor img {
@@ -940,7 +969,7 @@ footer {
     }
 }
 
-@media screen and (min-width: 550px) and (max-width: 819px) {
+@media screen and (min-width: 550px) and (max-width: 820px) {
     .movie {
         width: 161px;
         height: 240px;
@@ -961,11 +990,48 @@ footer {
     .casts {
         font-size: 12px;
     }
+
+
+    .genres {
+        display: flex;
+        gap: 5px;
+        font-size: small;
+        list-style-type: none;
+        margin: -8px;
+        margin-top: -40px;
+    }
     
+    .genres li {
+        border-radius: 5px;
+        padding: 4px 8px;
+    }
+    
+    .genre {
+        display: inline-block;
+        margin-bottom: 5px;
+        background-color: #1C1C1C;
+        color: white;
+        font-size: smaller;
+        border-radius: 5px;
+        padding: auto;
+    }
+
     .actor {
         display: flex;
+        margin: 0;
+        justify-content: space-around;
+        align-items: flex-start;
+        text-align: center;
         flex-wrap: wrap;
         gap: 10px;
+    }
+
+    .actor-name {
+        font-size: 14px;
+        max-width: 102px;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-wrap: break-word;
     }
     
     .actor img {
@@ -1008,6 +1074,14 @@ footer {
         order: 2;
         transition: top 0.3s ease;
     }
+    
+    .modal-content .close {
+        position: relative;
+        left: 0;
+        padding: 3px;
+        bottom: 30px;
+        margin-bottom: 15px;
+    }
 
     .modal-content .bookmark {
         position: absolute;
@@ -1017,7 +1091,6 @@ footer {
         top: 15px;
     }
 
-    
     .genreModalContent {
         position: relative;
         display: none;
@@ -1124,6 +1197,31 @@ footer {
         height: auto;
         object-fit: contain;
         display: block;
+    }
+
+    .actor {
+        display: flex;
+        margin: 0;
+        justify-content: space-around;
+        align-items: flex-start;
+        text-align: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .actor-name {
+        font-size: 14px;
+        max-width: 102px;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-wrap: break-word;
+    }
+    
+    .actor img {
+        width: 110%;
+        max-width: 102px;
+        height: auto;
+        object-fit: cover;
     }
 
     .menu {
