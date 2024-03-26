@@ -516,6 +516,23 @@ footer {
 }
 
 @media screen and (max-width: 375px) {
+    .movie {
+        width: 161px;
+        height: 240px;
+        margin: 10px auto;
+        box-sizing: border-box;
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+    }
+
+    .movie img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    
     .genres {
         padding: 2px 4px;
         font-size: small;
@@ -527,12 +544,12 @@ footer {
     
     .genre {
         display: inline-block;
-        margin-bottom: 5px;
+        margin: 5px auto;
         background-color: #1C1C1C;
         color: white;
         font-size: smaller;
         border-radius: 5px;
-        padding: 6px 3px;
+        padding: auto;
     }
 
     .search {
@@ -561,15 +578,16 @@ footer {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        justify-content: space-around;
     }
-
+    
     .actor-name {
         font-size: smaller;
     }
     
     .actor img {
         width: 110%;
-        max-width: 102px;
+        max-width: 85px;
         height: auto;
         object-fit: cover;
     }
@@ -582,9 +600,12 @@ footer {
         display: none;
     }
 
+    .director img {
+        max-width: 110px;
+    }
+
     .director-info h2 {
-        margin-bottom: 3px;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     header {
