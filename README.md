@@ -17,6 +17,11 @@ The Odyssey is a movie website that leverages the power of the TMDB API to provi
 ![Bookmarked](images/bookmarked.PNG)
 ![Genres](images/genres.PNG)
 
+## Website
+To view the website, click the link below:
+
+[The Odyssey](https://the-odyssey.netlify.app/)
+
 ## Contributing
 
 Contributions are welcome! If you have any ideas, suggestions, or improvements, feel free to open an issue or submit a pull request.
