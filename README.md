@@ -12,7 +12,10 @@ The Odyssey is a movie website that leverages the power of the TMDB API to provi
 
 ## Screenshots
 
-
+![Movies Home](images/movies%20home.PNG)
+![Movie Modal](images/movie%20modal.PNG)
+![Bookmarked](images/bookmarked.PNG)
+![Genres](images/genres.PNG)
 
 ## Contributing
 
